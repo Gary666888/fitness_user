@@ -16,7 +16,7 @@
           <img :src="this.$store.state.ip+data.t_img" alt="">
         </div>
         <h4>{{data.t_name}}</h4>
-        <div class="rate">
+        <!-- <div class="rate">
           评分：
           <van-rate
           :allow-half="true"
@@ -26,7 +26,7 @@
           <div class="order-btn">
             <van-button type="default" size="small" @click="order(data.t_id)" color="#5e8bb3" plain>立即预约</van-button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="box">
@@ -37,7 +37,7 @@
         <div>电话：{{data.u_tel}}
           <a :href="'tel:'+data.u_tel"><van-icon name="phone-o" :size="20" color="rgb(245, 176, 29)"/></a>
         </div>
-        <div>价格：{{data.t_price}} F币</div>
+        <!-- <div>价格：{{data.t_price}} F币</div> -->
       </div>
     </div>
     <div class="box">
@@ -45,37 +45,6 @@
       <div class="main">
         {{data.t_info?data.t_info:"暂无"}}
       </div>
-    </div>
-    <div class="box">
-      <div class="title"><van-icon name="records" :size="20" color="rgb(245, 176, 29)"/> 用户评价</div>
-      <van-list
-      class="main"
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad">
-
-        <van-cell v-for="item in rate" :key="item" :label="item.msg" center label-class="custom-label">
-          <!-- 使用 title 插槽来自定义标题 -->
-          <template #title>
-            <div>
-              
-              <span class="custom-title">{{item.name}}:</span>
-              <van-rate
-              class="custom-rate"
-                v-model="item.rate"
-                :size="14"
-                readonly
-              />
-              <span class="custom-time">{{item.time}}</span>
-              <!-- <van-tag plain type="primary" class="custom-time">{{item.time}}</van-tag> -->
-            </div>
-
-            
-          </template>
-          
-        </van-cell>
-      </van-list>
     </div>
   </div>
 </template>

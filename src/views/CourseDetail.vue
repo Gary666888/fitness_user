@@ -14,7 +14,7 @@
           <div class="name">{{data.c_name}}</div>
           <div class="rate">
             <span>K{{data.c_strong}}</span>
-            <van-rate
+            <!-- <van-rate
               v-model="data.c_strong"
               icon="fire"
               :size="16"
@@ -22,7 +22,7 @@
               void-icon="fire"
               void-color="#96959B"
               readonly
-            />
+            /> -->
           </div>
         </div>
       </div>
@@ -37,15 +37,15 @@
       <div>
         <van-icon name="friends-o" />名额：{{data.cp_max}}个 剩余：{{data.cp_max-data.cp_count}}个
       </div>
-      <div>
+      <!-- <div>
         <van-icon name="after-sale" />{{data.cp_price}}F币
-      </div>
-      <div class="location">
+      </div> -->
+      <!-- <div class="location">
         <van-icon name="location-o" />成都市龙泉驿区大面街道xxxxx
         <a class="phone" href="tel:17311388039">
           <van-icon name="phone" />
         </a>
-      </div>
+      </div> -->
     </div>
     <div class="teacher">
       <div class="title">教练介绍</div>
@@ -57,9 +57,9 @@
         </div>
         <div class="teacher-info">
           <div class="teacher-name">{{data.t_name}}</div>
-          <div class="teacher-rate">
+          <!-- <div class="teacher-rate">
             <van-rate v-model="data.rate" readonly size="14px" />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

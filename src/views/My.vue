@@ -12,12 +12,12 @@
     <div class="main">
       <van-cell title="个人信息" is-link to="/home/info" size="large" icon="bar-chart-o"/>
       <van-cell title="我的会员" is-link to="/home/vip" size="large" icon="vip-card-o"/>
-      <van-cell title="我的钱包" is-link to="/home/money" size="large" icon="balance-o"/>
-      <van-cell title="账号安全" is-link to="/home/account" size="large" icon="setting-o"/>
+      <!-- <van-cell title="我的钱包" is-link to="/home/money" size="large" icon="balance-o"/> -->
+      <!-- <van-cell title="账号安全" is-link to="/home/account" size="large" icon="setting-o"/> -->
       <van-cell title="课程记录" is-link to="/home/courseHistory" size="large" icon="records"/>
-      <van-cell title="私教记录" is-link to="/home/teacherHistory" size="large" icon="user-o"/>
-      <van-cell title="场地记录" is-link to="/home/placeHistory" size="large" icon="location-o"/>
-      <van-cell title="意见反馈" is-link to="/home/suggest" size="large" icon="vip-card-o"/>
+      <!-- <van-cell title="私教记录" is-link to="/home/teacherHistory" size="large" icon="user-o"/> -->
+      <!-- <van-cell title="场地记录" is-link to="/home/placeHistory" size="large" icon="location-o"/> -->
+      <!-- <van-cell title="意见反馈" is-link to="/home/suggest" size="large" icon="vip-card-o"/> -->
       <van-cell title="退出登录" is-link size="large" icon="close" @click="quit"/> 
     </div>
   </div>

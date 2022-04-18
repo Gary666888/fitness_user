@@ -30,7 +30,7 @@
           
         </van-pull-refresh>
       </van-tab>
-      <van-tab title="私教">
+      <!-- <van-tab title="私教">
         <van-sticky :offset-top="44">
           <div  class="search">
             <div class="search-input">
@@ -77,14 +77,14 @@
           
         </van-pull-refresh>
 
-      </van-tab>
+      </van-tab> -->
     </van-tabs>
   </div>
 </template>
 <script>
 // import { Toast } from 'vant';
 import CourseItem from "../components/CourseItem";
-import TeacherItem from "../components/TeacherItem"
+// import TeacherItem from "../components/TeacherItem"
 export default {
   data() {
     return {
@@ -108,7 +108,7 @@ export default {
   },
   components: {
     CourseItem,
-    TeacherItem
+    // TeacherItem
   },
   methods: {
     setTime(i) {

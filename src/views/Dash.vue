@@ -15,7 +15,7 @@
               <img :src="$store.state.ip+item.t_img" alt="">
             </div>
             <div class="name">{{item.t_name}}</div>
-            <van-rate v-model="item.t_rate" readonly size='12px'/>
+            <!-- <van-rate v-model="item.t_rate" readonly size='12px'/> -->
           </div>
         </div>     
       </div>
@@ -29,7 +29,7 @@
               <img :src="$store.state.ip+item.c_img" alt="">
             </div>
             <div class="name">{{item.c_name}}</div>
-            <van-rate
+            <!-- <van-rate
               v-model="item.c_strong"
               icon="fire"
               :size="16"
@@ -37,7 +37,7 @@
               void-icon="fire"
               void-color="#96959B"
               readonly
-            />
+            /> -->
           </div>
         </div>     
       </div>

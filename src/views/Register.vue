@@ -12,7 +12,7 @@
           :clearable="true"
           :rules="[{ required: true, message: '请填写手机号' ,trigger: 'onBlur'}]"
         />
-        <van-field
+        <!-- <van-field
           class="code-input"
           v-model="code"
           name="验证码"
@@ -30,14 +30,14 @@
                 {{time}}后重试
             </van-button>
           </template>
-        </van-field>
+        </van-field> -->
 
-        <div>
+        <!-- <div>
           <van-button block type="info" native-type="submit" @click="onSubmit" class="mybutton">下一步</van-button>
-        </div>
-        <div class="back" @click="back">返回登录</div>
+        </div> -->
+        <!-- <div class="back" @click="back">返回登录</div> -->
       </div>
-      <div class="myform" v-show="state">
+      <div class="myform">
         <van-field
           v-model="pwd"
           type="password"
@@ -55,9 +55,10 @@
         <div>
           <van-button block type="info" native-type="submit" @click="register" class="mybutton">立即注册</van-button>
         </div>
-        <div @click="state = false" class="back">
+        <!-- <div @click="state = false" class="back">
           返回上一步
-        </div>
+        </div> -->
+        <div class="back" @click="back">返回登录</div>
       </div>
       
     </div>
@@ -65,7 +66,7 @@
 </template>
 <script>
 import { Toast } from "vant";
-import crypto from "crypto";
+// import crypto from "crypto";
 export default {
   data() {
     return {
@@ -165,8 +166,13 @@ export default {
     },
     // 设置密码
     register() {
-      console.log("设置密码");
-      if(!this.pwd){
+      if(!this.tel){
+        Toast("请填写手机号");
+      }
+      else if(!(/^1[3456789]\d{9}$/.test(this.tel))){ 
+        Toast("手机号码有误，请重填"); 
+      }
+      else if(!this.pwd){
         Toast("请输入密码");
       }
       else if(this.pwd.length<6){
@@ -179,12 +185,12 @@ export default {
         Toast("确认密码和密码不一致");
       }
       else{
-        const md5 = crypto.createHash("md5"); // md5 加密，不可逆加密
-        const newPass = md5.update(this.pwd).digest("hex"); // 加密
-        console.log(newPass);
-        this.axios.post("/users/register", {
-          tel: this.tel,
-          pwd: newPass
+        // const md5 = crypto.createHash("md5"); // md5 加密，不可逆加密
+        // const newPass = md5.update(this.pwd).digest("hex"); // 加密
+        // console.log(newPass);
+        this.axios.post("/user/addUser", {
+          uTel: this.tel,
+          uPwd: this.pwd
         })
         .then(res => {
           console.log(res.data);
@@ -233,6 +239,7 @@ export default {
 }
 .back{
   margin-top: 20px;
+  text-align: center;
   color:rgb(201, 201, 201);
 }
 .mybutton{

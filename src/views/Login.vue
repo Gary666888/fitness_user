@@ -5,11 +5,9 @@
       <van-tabs v-model="type" class="tab"
         background="transparent"      
         color='white'
-        :border="false"
-        title-inactive-color="gray"
-        title-active-color="white">
+        :border="false">
 
-        <van-tab title="快速登录">
+        <!-- <van-tab title="快速登录">
           <div ref="codeForm">
             <van-field
               v-model="tel"
@@ -41,8 +39,8 @@
               <van-button block type="info" native-type="submit" class='mybutton' @click="onSubmit">提交</van-button>
             </div>
           </div>
-        </van-tab>
-        <van-tab title="密码登录">
+        </van-tab> -->
+        <!-- <van-tab title="密码登录"> -->
           <div ref="pwdForm">
             <van-field
               v-model="tel"
@@ -61,7 +59,7 @@
               <van-button block type="info" native-type="submit" class='mybutton' @click="onSubmit">提交</van-button>
             </div>
           </div>
-        </van-tab>
+        <!-- </van-tab> -->
       </van-tabs>
       <div class="link">
         <router-link to="/register" class="register-link">注册新账户</router-link>
@@ -73,7 +71,7 @@
 <script>
 import Vue from "vue";
 import { Toast } from "vant";
-import crypto from "crypto";
+// import crypto from "crypto";
 Vue.use(Toast);
 export default {
   data() {
@@ -88,65 +86,7 @@ export default {
   methods: {
     onSubmit() {
       console.log("登录", this.type);
-
-      //验证码登录
-      if (this.type == 0) {
-        //验证验证码是否正确
-        if(!this.tel){
-          Toast("请填写手机号");
-        }
-        else if(!(/^1[3456789]\d{9}$/.test(this.tel))){ 
-          Toast("手机号码有误，请重填"); 
-        }
-        else if(!this.code){
-          Toast("请输入验证码");
-        }
-        else{
-          this.axios.post("/tel/confirm", {
-            tel: this.tel,
-            code: this.code
-          })
-          .then(res => {
-            console.log(res.data);
-            if (res.data.code == 200) {
-              // 验证成功提交数据到后台返回用户信息
-              this.axios
-                .post("/users/userLogin", {
-                  tel: this.tel,
-                  type: this.type
-                })
-                .then(res => {
-                  console.log(res);
-                  if (res.data.code == "200") {
-                    var token = res.data.data.token;
-                    var userId = res.data.data.userId;
-                    sessionStorage.setItem("token", token);
-                    sessionStorage.setItem("uid",userId);
-                    console.log("收到的token",token);
-                    // 获取参数（未登录时想访问的路由）
-                    var url = this.$route.query.redirect;
-                    console.log(url);
-                    url = url ? url : "/";
-                    // 切换路由
-                    this.$router.replace(url);
-                  }
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            } else {
-              Toast("验证失败!");
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        }
-        
-      }
-      //密码登录
-      else {
-        if(!this.tel){
+      if(!this.tel){
           Toast("请填写手机号");
         }
         else if(!(/^1[3456789]\d{9}$/.test(this.tel))){ 
@@ -156,11 +96,11 @@ export default {
           Toast("请输入密码");
         }
         else{
-          const md5 = crypto.createHash("md5"); // md5 加密，不可逆加密
-          const newPass = md5.update(this.password).digest("hex"); // 加密
+          // const md5 = crypto.createHash("md5"); // md5 加密，不可逆加密
+          // const newPass = md5.update(this.password).digest("hex"); // 加密
           this.axios.post("/users/userLogin", {
             tel: this.tel,
-            pwd: newPass,
+            pwd: this.password,
             type: this.type
           })
           .then(res => {
@@ -185,7 +125,6 @@ export default {
             console.log(err);
           });
         }
-      }
     },
     getCode() {
       console.log("获取验证码", this.tel);
