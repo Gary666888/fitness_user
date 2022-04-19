@@ -12,7 +12,7 @@
           :clearable="true"
           :rules="[{ required: true, message: '请填写手机号' ,trigger: 'onBlur'}]"
         />
-        <!-- <van-field
+        <van-field
           class="code-input"
           v-model="code"
           name="验证码"
@@ -20,24 +20,18 @@
           :border="false"
           :rules="[{ required: true, message: '请填写',trigger: 'onBlur' }]">
           <template #button>
-            <van-button size="small" class="code-btn" @click="getCode">发送验证码</van-button>
-            <van-button
-              size="small"
-              class="code-btn"
-              @click="getCode"
-              v-show="time"
-              disabled >
-                {{time}}后重试
-            </van-button>
+            <div @click="refreshCode()" class="code" style="cursor:pointer;" title="点击切换验证码">
+              <s-identify :identifyCode="identifyCode"></s-identify>
+            </div>
           </template>
-        </van-field> -->
+        </van-field>
 
-        <!-- <div>
+        <div>
           <van-button block type="info" native-type="submit" @click="onSubmit" class="mybutton">下一步</van-button>
-        </div> -->
-        <!-- <div class="back" @click="back">返回登录</div> -->
+        </div>
+        <div class="back" @click="back">返回登录</div>
       </div>
-      <div class="myform">
+      <div class="myform" v-show="state">
         <van-field
           v-model="pwd"
           type="password"
@@ -55,10 +49,9 @@
         <div>
           <van-button block type="info" native-type="submit" @click="register" class="mybutton">立即注册</van-button>
         </div>
-        <!-- <div @click="state = false" class="back">
+        <div @click="state = false" class="back">
           返回上一步
-        </div> -->
-        <div class="back" @click="back">返回登录</div>
+        </div>
       </div>
       
     </div>
@@ -66,7 +59,8 @@
 </template>
 <script>
 import { Toast } from "vant";
-// import crypto from "crypto";
+import sIdentify from "../components/sIdentify.vue";
+import crypto from "crypto";
 export default {
   data() {
     return {
@@ -75,10 +69,33 @@ export default {
       state: false,
       pwd: "",
       confirmPwd: "",
-      time: 0
+      time: 0,
+      identifyCode: "",
+      identifyCodes: ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
     };
   },
-  methods: {
+  components: { sIdentify },
+  mounted() {
+    this.refreshCode()
+  },
+  methods: {// 生成随机数
+    randomNum(min, max) {
+      max = max + 1
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    // 更新验证码
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+      console.log('当前验证码:',this.identifyCode);
+    },
+    // 随机生成验证码字符串
+    makeCode(data, len) {
+      console.log('data, len:', data, len)
+      for (let i = 0; i < len; i++) {
+        this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length-1)]
+      }
+    },
     back(){
       this.$router.replace({path:'/login'});
     },
@@ -95,84 +112,33 @@ export default {
         Toast("请输入验证码");
       }
       else{
-        this.axios.post("/tel/confirm", {
-          tel: this.tel,
-          code: this.code
-        })
-        .then(res => {
-          console.log(res.data);
-          if (res.data.code == 200) {
-            this.state = true;
-          } else {
-            Toast("验证失败!");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        if(this.code === this.identifyCode){
+          this.state = true;
+        }else{
+          Toast("验证失败!");
+        }
+        // this.axios.post("/tel/confirm", {
+        //   tel: this.tel,
+        //   code: this.code
+        // })
+        // .then(res => {
+        //   console.log(res.data);
+        //   if (res.data.code == 200) {
+        //     this.state = true;
+        //   } else {
+        //     Toast("验证失败!");
+        //   }
+        // })
+        // .catch(err => {
+        //   console.log(err);
+        // });
       }
       
     },
-    // 获取验证码
-    getCode() {
-      console.log("获取验证码");
-      if(!this.tel){
-        Toast("请填写手机号");
-      }
-      else if(!(/^1[3456789]\d{9}$/.test(this.tel))){ 
-        Toast("手机号码有误，请重填"); 
-      } 
-      else {
-        this.axios.post("/users/findTel", {
-          tel: this.tel,
-          role:1
-        })
-        .then(res => {
-          console.log(res);
-          if (res.data.code == 200) {
-            //该手机号可用
-            this.axios
-              .post("/tel/getCode", {
-                //发送请求获取验证码
-                tel: this.tel
-              })
-              .then(res => {
-                console.log(res);
-                Toast(res.data.msg);
-                if(res.data.code==200){
-                  this.time = 60;
-                  let countDown = setInterval(() => {
-                    if (this.time == 0) {
-                      clearInterval(countDown);
-                    } else {
-                      this.time--;
-                    }
-                  }, 1000);
-                }
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
-            //手机号被注册
-            console.log("手机号被注册");
-            Toast(res.data.msg);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      }
-    },
     // 设置密码
     register() {
-      if(!this.tel){
-        Toast("请填写手机号");
-      }
-      else if(!(/^1[3456789]\d{9}$/.test(this.tel))){ 
-        Toast("手机号码有误，请重填"); 
-      }
-      else if(!this.pwd){
+      console.log("设置密码");
+      if(!this.pwd){
         Toast("请输入密码");
       }
       else if(this.pwd.length<6){
@@ -185,12 +151,12 @@ export default {
         Toast("确认密码和密码不一致");
       }
       else{
-        // const md5 = crypto.createHash("md5"); // md5 加密，不可逆加密
-        // const newPass = md5.update(this.pwd).digest("hex"); // 加密
-        // console.log(newPass);
-        this.axios.post("/user/addUser", {
-          uTel: this.tel,
-          uPwd: this.pwd
+        const md5 = crypto.createHash("md5"); // md5 加密，不可逆加密
+        const newPass = md5.update(this.pwd).digest("hex"); // 加密
+        console.log(newPass);
+        this.axios.post("/users/register", {
+          tel: this.tel,
+          pwd: newPass
         })
         .then(res => {
           console.log(res.data);
@@ -239,7 +205,6 @@ export default {
 }
 .back{
   margin-top: 20px;
-  text-align: center;
   color:rgb(201, 201, 201);
 }
 .mybutton{
