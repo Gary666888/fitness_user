@@ -159,6 +159,7 @@ export default {
         let form = new FormData();
         // 后端接受参数 ，可以接受多个参数
         form.append("file",img)
+        form.append("imgType","1")
         // 请求头设置文件上传
         let config = {
             //必须
@@ -167,11 +168,11 @@ export default {
           },
         }
         //发送请求
-        this.axios.post('/teacher/upload',form,config)
+        this.axios.post('/upload',form,config)
         .then(res=>{
           console.log(res.data)
           if(res.data.code=='200'){
-            this.img = res.data.url;
+            this.img = res.data.data;
             this.imgUrl = this.$store.state.ip+this.img;
           }
         })
